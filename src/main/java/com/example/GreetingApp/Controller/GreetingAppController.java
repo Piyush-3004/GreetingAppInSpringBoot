@@ -12,13 +12,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.GreetingApp.dto.GreetingAppdto;
+import com.example.GreetingApp.dto.Userdto;
 import com.example.GreetingApp.model.GreetingApp;
+
+import com.example.GreetingApp.service.IGreetingService;
 
 @RestController
 @RequestMapping("/greetings")
 public class GreetingAppController {
 	
 	private final AtomicLong counter = new AtomicLong();
+	@Autowired
+	IGreetingService greetingService;
+
+///// Uc 3 Greeting with User attributes
+	//http://localhost:8080/greetings/greetingswithfirstname
+	//{"id": 0,"message": "GreetingsPiyush"}
+	  @PostMapping("/greetingswithfirstname")
+	  public GreetingApp userGreeting(@RequestBody Userdto userDTO) {
+		  
+        return greetingService.greetingWithUser("Piyush");
+	  }
+	  //http://localhost:8080/greetings/greetingswithfirstnameandlastname
+	  //{"id": 0,"message": "GreetingsPiyushPatil"	}
+	  @PostMapping("/greetingswithfirstnameandlastname")
+	  public GreetingApp userGreeting1(@RequestBody Userdto userDTO) {
+		  
+        return greetingService.greetingWithUser("Piyush","Patil");
+	  }
+	  
+//// Uc 2 get "Hello World" using Service Layer
+	
+	@GetMapping("/getgreetingservice")
+	public String getGreeting(@RequestBody GreetingAppdto greetingAppDto){
+
+	    return greetingService.getGreeting(greetingAppDto);
+	}
+	
+	
 	@GetMapping("/greeting")
 	public GreetingApp getGreeting(@RequestParam(value = "message", defaultValue="Default")String message) {
 		GreetingApp greeting = new GreetingApp(counter.incrementAndGet(),message);
