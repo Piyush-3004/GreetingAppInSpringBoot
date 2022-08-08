@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.GreetingApp.dto.GreetingAppdto;
-import com.example.GreetingApp.dto.Userdto;
 import com.example.GreetingApp.model.GreetingApp;
+import com.example.GreetingApp.repository.IGreetingRepository;
+import com.example.GreetingApp.dto.Userdto;
 
 import com.example.GreetingApp.service.IGreetingService;
 
@@ -25,7 +26,14 @@ public class GreetingAppController {
 	private final AtomicLong counter = new AtomicLong();
 	@Autowired
 	IGreetingService greetingService;
-
+	IGreetingRepository greetingRepo;
+///// Uc 4 Save Message in Repository	
+	//
+	
+	  @PostMapping("addemployee")
+	  public GreetingApp addemployee(@RequestBody GreetingAppdto greetingAppDto){
+        return greetingRepo.addGreeting(greetingAppDto);
+	  }
 ///// Uc 3 Greeting with User attributes
 	//http://localhost:8080/greetings/greetingswithfirstname
 	//{"id": 0,"message": "GreetingsPiyush"}
