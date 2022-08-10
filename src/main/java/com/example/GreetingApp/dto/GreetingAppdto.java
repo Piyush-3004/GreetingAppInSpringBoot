@@ -1,8 +1,10 @@
 package com.example.GreetingApp.dto;
 
+import lombok.Data;
 
+@Data
 public class GreetingAppdto {
 
-	String message;
+	private String message;
 	
 }

@@ -1,5 +1,6 @@
 package com.example.GreetingApp.Controller;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.GreetingApp.dto.GreetingAppdto;
 import com.example.GreetingApp.model.GreetingApp;
-import com.example.GreetingApp.repository.IGreetingRepository;
+
 import com.example.GreetingApp.dto.Userdto;
 
 import com.example.GreetingApp.service.IGreetingService;
@@ -25,30 +26,54 @@ public class GreetingAppController {
 	
 	private final AtomicLong counter = new AtomicLong();
 	@Autowired
-	IGreetingService greetingService;
-	IGreetingRepository greetingRepo;
-///// Uc 4 Save Message in Repository	
-	//
+	private IGreetingService greetingService;
+
 	
-	  @PostMapping("addemployee")
-	  public GreetingApp addemployee(@RequestBody GreetingAppdto greetingAppDto){
-        return greetingRepo.addGreeting(greetingAppDto);
-	  }
+//// Uc 6 Get All messages
+
+	@GetMapping("getAllMessages")
+	public List<GreetingApp> getAllMessages(){
+		return greetingService.getAll();
+	}
+	
+///// Uc 5 Find by Id
+
+	@GetMapping("getById/{id}")
+	public GreetingApp getById(@PathVariable long id) {
+		return greetingService.getById(id);
+	}
+	
+///// Uc 4 Save Message in Repository	
+	//adds first or and last name to greeting if passed in parameters
+	
+	@PostMapping("/addmessage")
+	public GreetingApp greeting(@RequestParam(value = "firstName", defaultValue="")String firstName,@RequestParam(value = "lastName", defaultValue="")String lastName) {
+		Userdto user = new Userdto();
+		user.setFirstName(firstName);
+		user.setFirstName(lastName);
+		return greetingService.addGreeting(user);		   
+
+	}
 ///// Uc 3 Greeting with User attributes
-	//http://localhost:8080/greetings/greetingswithfirstname
-	//{"id": 0,"message": "GreetingsPiyush"}
-	  @PostMapping("/greetingswithfirstname")
-	  public GreetingApp userGreeting(@RequestBody Userdto userDTO) {
-		  
-        return greetingService.greetingWithUser("Piyush");
+      //1. User First Name and LastName or
+	  //2. With just First Name or LastName based on User attributes provides or
+	  //3. Just Hello World.
+	  @GetMapping("/greetings")
+	  public GreetingApp greetingWithUser(@RequestParam (value = "firstName", defaultValue="")String firstName
+			  							 ,@RequestParam(value = "lastName", defaultValue="")String lastName) {
+		  Userdto user = new Userdto();
+		  user.setFirstName(firstName);
+		  user.setLastName(lastName);
+		  return greetingService.greetingWithUser(user);
+	
 	  }
 	  //http://localhost:8080/greetings/greetingswithfirstnameandlastname
 	  //{"id": 0,"message": "GreetingsPiyushPatil"	}
-	  @PostMapping("/greetingswithfirstnameandlastname")
-	  public GreetingApp userGreeting1(@RequestBody Userdto userDTO) {
-		  
-        return greetingService.greetingWithUser("Piyush","Patil");
-	  }
+//	  @PostMapping("/greetingswithfirstnameandlastname")
+//	  public GreetingApp userGreeting1(@RequestBody Userdto userDTO) {
+//		  
+//        return greetingService.greetingWithUser("Hello"+userDTO.getFirstName()+userDTO.getLastName());
+//	  }
 	  
 //// Uc 2 get "Hello World" using Service Layer
 	
