@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,20 @@ public class GreetingAppController {
 	private final AtomicLong counter = new AtomicLong();
 	@Autowired
 	private IGreetingService greetingService;
+	
+//// Uc 8 Delete Message
+	@DeleteMapping("deleteMessage/{id}")
+		public GreetingApp deleteMessage(@PathVariable Long id){
+		return greetingService.deleteMessage(id);
+	}
+	
+	
+//// Uc 7 Edit the message
+	@PutMapping("/edit/{id}")
+	public GreetingApp edit(@RequestBody GreetingApp greetingApp , @PathVariable long id) {
+
+		return greetingService.edit(id,greetingApp);
+	}
 
 	
 //// Uc 6 Get All messages
@@ -84,6 +99,7 @@ public class GreetingAppController {
 	}
 	
 	
+	// Uc 1
 	@GetMapping("/greeting")
 	public GreetingApp getGreeting(@RequestParam(value = "message", defaultValue="Default")String message) {
 		GreetingApp greeting = new GreetingApp(counter.incrementAndGet(),message);

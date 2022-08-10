@@ -6,17 +6,24 @@ import com.example.GreetingApp.dto.Userdto;
 import com.example.GreetingApp.model.GreetingApp;
 
 public interface IGreetingService {
-
+	// Uc 2
 	String getGreeting(GreetingAppdto greetingAppDto);
 
-	GreetingApp greetingWithUser(Userdto user);
-
-	GreetingApp greetingWithUser(String firstName, String lastName);
+	// Uc 3
+	GreetingApp greetingWithUser(Userdto user);	
 	
+	// Uc 4
 	GreetingApp addGreeting(Userdto userDto);
 
+	// Uc 5
 	GreetingApp getById(long id);
-//	GreetingApp addGreeting(GreetingAppdto greetingAppDto);
 
+	// Uc 6
 	List<GreetingApp> getAll();
+	
+	// Uc 7
+	GreetingApp edit(long id ,GreetingApp greetingApp);
+
+	// Uc 8
+	GreetingApp deleteMessage(Long id);
 }
